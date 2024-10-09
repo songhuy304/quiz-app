@@ -1,0 +1,16 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 74px;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    z-index: 40;
+}

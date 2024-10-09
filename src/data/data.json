@@ -1,0 +1,33 @@
+{
+    "quiz": {
+      "title": "Sample Quiz",
+      "questions": [
+        {
+          "id": 2,
+          "type": "multi-choice",
+          "question_text": "Which of the following are primary colors?",
+          "options": [
+            {"id": "a", "text": "Red"},
+            {"id": "b", "text": "Blue"},
+            {"id": "c", "text": "Green"},
+            {"id": "d", "text": "Yellow"}
+          ],
+          "correct_answer": 1
+        },
+        {
+          "id": 3,
+          "type": "single-choice",
+          "question_text": "What is the capital of France?",
+          "difficult": "medium",
+          "options": [
+            {"id": "a", "text": "Berlin"},
+            {"id": "b", "text": "Madrid"},
+            {"id": "c", "text": "Paris"},
+            {"id": "d", "text": "Rome"}
+          ],
+          "correct_answer": 2
+        }
+      ]
+    }
+  }
+  
