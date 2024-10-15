@@ -1,11 +1,19 @@
-import { UserSignup } from '@/model/user';
-import { useSignupMutation } from '@/Redux/userSlice/userSlice';
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { TResponseError } from "@/model";
+import { UserSignup } from "@/model/user";
+import { useSignupMutation } from "@/Redux/userSlice/userSlice";
+import { Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 const SignUp = () => {
-  const [Signup, { isError, isSuccess, error }] =
-    useSignupMutation();
-    const navigate = useNavigate();
+  const [Signup, { isError, isSuccess, error }] = useSignupMutation();
+  const navigate = useNavigate();
+
+  const showModal = (title: string, message: string) => {
+    Modal.error({
+      title: title,
+      content: message,
+    });
+  };
 
   const [formData, setFormData] = useState<UserSignup>({
     username: "",
@@ -22,6 +30,9 @@ const SignUp = () => {
   };
 
   const handleSubmit = async () => {
+    if (!formData.username) return showModal("Error", "userName is required");
+    if (!formData.email) return showModal("Error", "email is required");
+    if (!formData.password) return showModal("Error", "password is required");
     await Signup(formData);
   };
 
@@ -30,7 +41,17 @@ const SignUp = () => {
       navigate("/login");
     }
     if (isError) {
-      console.log(error);
+      const responseError = error as TResponseError;
+      if (
+        responseError.status === 400 &&
+        typeof responseError.data.data === "string"
+      ) {
+        showModal("Error", responseError.data.data);
+        return;
+      }
+      if (typeof responseError.data.data === "object") {
+        showModal("Error", responseError.data.data[0].msg);
+      }
     }
   }, [isError, isSuccess]);
 
@@ -72,12 +93,18 @@ const SignUp = () => {
                   name="email"
                   onChange={onChangeValue}
                 />
-                <button onClick={handleSubmit} className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                  <span className="ml-3">
-                    Sign In
-                  </span>
+                <button
+                  onClick={handleSubmit}
+                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                >
+                  <span className="ml-3">Sign In</span>
                 </button>
-                <p className="mt-5 text-center text-sm text-gray-500">You have account? <Link to="/login" className="text-blue-500">Sign in</Link></p>
+                <p className="mt-5 text-center text-sm text-gray-500">
+                  You have account?{" "}
+                  <Link to="/login" className="text-blue-500">
+                    Sign in
+                  </Link>
+                </p>
               </div>
             </div>
           </div>
@@ -92,7 +119,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

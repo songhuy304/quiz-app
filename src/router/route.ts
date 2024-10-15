@@ -61,7 +61,7 @@ export const NavRouter = [
     title : 'Exams',
     path: '/exams'
   },
-  {
+    {
     title : 'Contact Us',
     path: '/contactus'
   }
